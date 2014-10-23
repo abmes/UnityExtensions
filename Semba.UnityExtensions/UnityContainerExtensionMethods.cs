@@ -27,7 +27,7 @@ namespace Microsoft.Practices.Unity
             return container.RegisterType<T>(new ContainerControlledLifetimeManager(), injectionMembers);
         }
 
-        public static IUnityContainer ReigsterIEnumerable(this IUnityContainer container)
+        public static IUnityContainer RegisterIEnumerable(this IUnityContainer container)
         {
             return container.RegisterType(typeof(IEnumerable<>), new InjectionFactory((c, t, n) => c.ResolveAll(t.GetGenericArguments().Single())));
         }
