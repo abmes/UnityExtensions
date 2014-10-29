@@ -14,9 +14,20 @@ mkdir bin\lib\net45
 
 Copy-Item .\Semba.UnityExtensions\bin\Release\Semba.UnityExtensions.dll .\bin\lib\net45
 
+
+echo ""
+echo "Downloading NuGet.exe ..."
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+$webClient = New-Object System.Net.WebClient
+$webClient.DownloadFile("https://nuget.org/nuget.exe", "nuget.exe")
+
 cd bin
-..\NuGet.exe pack Semba.UnityExtensions.nuspec
+..\nuget.exe pack Semba.UnityExtensions.nuspec
 cd..
+
+Remove-Item nuget.exe
+
 
 if (-not (Test-Path "build"))
 {
