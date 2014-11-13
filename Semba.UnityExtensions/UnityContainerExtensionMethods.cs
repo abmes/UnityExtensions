@@ -24,5 +24,6 @@ namespace Semba.UnityExtensions
         {
             return container.RegisterType(typeof(IEnumerable<>), new InjectionFactory((c, t, n) => c.ResolveAll(t.GetGenericArguments().Single())));
         }
+		
     }
 }
