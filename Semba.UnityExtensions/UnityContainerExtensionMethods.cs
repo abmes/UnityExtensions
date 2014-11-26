@@ -40,17 +40,17 @@ namespace Semba.UnityExtensions
             return container;
         }
 
-        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator>(this IUnityContainer container)
+        public static IUnityContainer RegisterDecoratorChain<TFrom, TTo, TDecorator>(this IUnityContainer container)
         {
             return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator));
         }
 
-        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator1, TDecorator2>(this IUnityContainer container)
+        public static IUnityContainer RegisterDecoratorChain<TFrom, TTo, TDecorator1, TDecorator2>(this IUnityContainer container)
         {
             return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator1), typeof(TDecorator2));
         }
 
-        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator1, TDecorator2, TDecorator3>(this IUnityContainer container)
+        public static IUnityContainer RegisterDecoratorChain<TFrom, TTo, TDecorator1, TDecorator2, TDecorator3>(this IUnityContainer container)
         {
             return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator1), typeof(TDecorator2), typeof(TDecorator3));
         }
