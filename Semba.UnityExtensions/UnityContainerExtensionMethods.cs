@@ -23,5 +23,36 @@ namespace Semba.UnityExtensions
         {
             return container.RegisterType(typeof(IEnumerable<>), new InjectionFactory((c, t, n) => c.ResolveAll(t.GetGenericArguments().Single())));
         }
+
+        public static IUnityContainer RegisterDecoratorChain<TFrom>(this IUnityContainer container, params Type[] decoratorChain)
+        {
+            string previousRegistrationName = null;
+
+            foreach (var t in decoratorChain)
+            {
+                var currentRegistrationName = (t == decoratorChain.Last()) ? "" : Guid.NewGuid().ToString();
+                var constructor = t.GetConstructors().Single();
+                var parameters = constructor.GetParameters().Select(x => x.ParameterType == typeof(TFrom) ? new ResolvedParameter<TFrom>(previousRegistrationName) : new ResolvedParameter(x.ParameterType)).ToArray();
+                container.RegisterType(typeof(TFrom), t, currentRegistrationName, new InjectionConstructor(parameters));
+                previousRegistrationName = currentRegistrationName;
+            }
+
+            return container;
+        }
+
+        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator>(this IUnityContainer container)
+        {
+            return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator));
+        }
+
+        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator1, TDecorator2>(this IUnityContainer container)
+        {
+            return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator1), typeof(TDecorator2));
+        }
+
+        public static IUnityContainer RegisterType<TFrom, TTo, TDecorator1, TDecorator2, TDecorator3>(this IUnityContainer container)
+        {
+            return container.RegisterDecoratorChain<TFrom>(typeof(TTo), typeof(TDecorator1), typeof(TDecorator2), typeof(TDecorator3));
+        }
     }
 }
