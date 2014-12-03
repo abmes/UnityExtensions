@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Semba.UnityExtensions</id>
-    <version>1.0.7</version>
+    <version>1.0.14</version>
     <authors>SEMBA</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Semba Unity Extensions</title>
@@ -10,6 +10,9 @@
     <copyright>Copyright 2014</copyright>
 	<dependencies>
       <dependency id="Unity" version="3.5.1404.0" />
+      <dependency id="Castle.Core" version="3.3.3" />
+      <dependency id="JetBrains.Annotations.Redist" version="7.1" />
+      <dependency id="Unity.TypedFactories" version="1.0.55" />
     </dependencies>
   </metadata>
 </package>
