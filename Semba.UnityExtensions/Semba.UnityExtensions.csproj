@@ -57,6 +57,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DecoratorBuildStrategy.cs" />
+    <Compile Include="DecoratorContainerExtension.cs" />
+    <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityContainerExtensionMethods.cs" />
   </ItemGroup>
