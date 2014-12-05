@@ -21,16 +21,18 @@ namespace Semba.UnityExtensions
 
         private void AddRegistration(object sender, RegisterEventArgs e)
         {
-            if (e.TypeFrom.IsInterface)
+            var typeTo = e.TypeTo;
+            var typeFrom = e.TypeFrom ?? e.TypeTo;
+            if (typeFrom.IsInterface)
             {
-                var key = Tuple.Create(e.TypeFrom, e.Name);
+                var key = Tuple.Create(typeFrom, e.Name);
                 if (!_decoratorChains.ContainsKey(key))
                 {
-                    _decoratorChains.Add(key, new[] { e.TypeTo });
+                    _decoratorChains.Add(key, new[] { typeTo });
                 }
                 else
                 {
-                    _decoratorChains[key] = _decoratorChains[key].Concat(new[] { e.TypeTo });
+                    _decoratorChains[key] = _decoratorChains[key].Concat(new[] { typeTo });
                 }
             }
         }
