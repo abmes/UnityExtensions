@@ -58,10 +58,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DecoratorBuildStrategy.cs" />
+    <Compile Include="DecoratorChainExtensionMethods.cs" />
     <Compile Include="DecoratorContainerExtension.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
+    <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnityContainerExtensionMethods.cs" />
+    <Compile Include="SingletonExtensionMethods.cs" />
+    <Compile Include="AutoFactoryExtensionMethods.cs" />
+    <Compile Include="LazyExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

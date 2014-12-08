@@ -15,14 +15,21 @@ namespace Semba.UnityExtensions
         protected override void Initialize()
         {
             _decoratorChains = new Dictionary<Tuple<Type, string>, IEnumerable<Type>>();
-            Context.Registering += AddRegistration;
             Context.Strategies.Add(new DecoratorBuildStrategy(_decoratorChains), UnityBuildStage.PreCreation);
+            Context.Registering += AddRegistration;
+        }
+
+        public override void Remove()
+        {
+            Context.Registering -= AddRegistration;
+            _decoratorChains.Clear();
         }
 
         private void AddRegistration(object sender, RegisterEventArgs e)
         {
             var typeTo = e.TypeTo;
             var typeFrom = e.TypeFrom ?? e.TypeTo;
+            
             if (typeFrom.IsInterface)
             {
                 var key = Tuple.Create(typeFrom, e.Name);
