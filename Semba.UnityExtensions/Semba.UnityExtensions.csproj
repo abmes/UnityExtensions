@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DecoratorBuildStrategy.cs" />
-    <Compile Include="DecoratorChainExtensionMethods.cs" />
     <Compile Include="DecoratorContainerExtension.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />

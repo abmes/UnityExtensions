@@ -30,15 +30,15 @@ namespace Semba.UnityExtensions
 
         // ------------------------------
 
-        public static IUnityContainer RegisterLazyDecorator<TFrom>(this IUnityContainer container) where TFrom : class
-        {
-            var proxyGenerator = new Castle.DynamicProxy.ProxyGenerator();
+        //public static IUnityContainer RegisterLazyDecorator<TFrom>(this IUnityContainer container) where TFrom : class
+        //{
+        //    var proxyGenerator = new Castle.DynamicProxy.ProxyGenerator();
 
-            var toType = proxyGenerator.ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(typeof(TFrom), null, null);
-            //var toType = proxyGenerator.CreateInterfaceProxyWithoutTarget<TFrom>(new LazyInterceptor<TFrom>(container.Resolve<Func<TFrom>>()));
+        //    var toType = proxyGenerator.ProxyBuilder.CreateInterfaceProxyTypeWithoutTarget(typeof(TFrom), null, null);
+        //    //var toType = proxyGenerator.CreateInterfaceProxyWithoutTarget<TFrom>(new LazyInterceptor<TFrom>(container.Resolve<Func<TFrom>>()));
 
-            return container.RegisterType(typeof(TFrom), toType, new InjectionFactory(c => proxyGenerator.CreateInterfaceProxyWithoutTarget<TFrom>(new LazyInterceptor<TFrom>(c.Resolve<Func<TFrom>>()))));
-        }
+        //    return container.RegisterType(typeof(TFrom), toType, new InjectionFactory(c => proxyGenerator.CreateInterfaceProxyWithoutTarget<TFrom>(new LazyInterceptor<TFrom>(c.Resolve<Func<TFrom>>()))));
+        //}
 
         // -------------------------------
 
