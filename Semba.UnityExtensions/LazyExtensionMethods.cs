@@ -8,11 +8,8 @@ namespace Semba.UnityExtensions
 {
     public static class LazyExtensionMethods
     {
-        // -------------------------------
-
         class LazyInterceptor<T> : Castle.DynamicProxy.IInterceptor
         {
-
             private readonly Lazy<T> _lazyObject;
 
             public LazyInterceptor(Func<T> factoryFunc)
@@ -42,29 +39,14 @@ namespace Semba.UnityExtensions
 
         // -------------------------------
 
-        public static IUnityContainer RegisterTypeByFactoryFunc<TResult>(this IUnityContainer container, Func<TResult> factoryFunc)
-        {
-            return container.RegisterType<TResult>(new InjectionFactory(c => factoryFunc()));
-        }
-
         public static IUnityContainer RegisterTypeByFactoryFuncLazy<TResult>(this IUnityContainer container, Func<TResult> factoryFunc) where TResult : class
         {
             return container.RegisterType<TResult>(new InjectionFactory(c => new Castle.DynamicProxy.ProxyGenerator().CreateInterfaceProxyWithoutTarget<TResult>(new LazyInterceptor<TResult>(() => factoryFunc()))));
         }
 
-        public static IUnityContainer RegisterTypeByFactoryFunc<TResult, TParam>(this IUnityContainer container, Func<TParam, TResult> factoryFunc)
-        {
-            return container.RegisterType<TResult>(new InjectionFactory(c => factoryFunc(c.Resolve<TParam>())));
-        }
-
         public static IUnityContainer RegisterTypeByFactoryFuncLazy<TResult, TParam>(this IUnityContainer container, Func<TParam, TResult> factoryFunc) where TResult : class
         {
             return container.RegisterType<TResult>(new InjectionFactory(c => new Castle.DynamicProxy.ProxyGenerator().CreateInterfaceProxyWithoutTarget<TResult>(new LazyInterceptor<TResult>(() => factoryFunc(c.Resolve<TParam>())))));
-        }
-
-        public static IUnityContainer RegisterTypeByFactoryFunc<TResult, TParam1, TParam2>(this IUnityContainer container, Func<TParam1, TParam2, TResult> factoryFunc)
-        {
-            return container.RegisterType<TResult>(new InjectionFactory(c => factoryFunc(c.Resolve<TParam1>(), c.Resolve<TParam2>())));
         }
 
         public static IUnityContainer RegisterTypeByFactoryFuncLazy<TResult, TParam1, TParam2>(this IUnityContainer container, Func<TParam1, TParam2, TResult> factoryFunc) where TResult : class
@@ -82,19 +64,9 @@ namespace Semba.UnityExtensions
                         }));
         }
 
-        public static IUnityContainer RegisterTypeByFactoryFunc<TResult, TParam1, TParam2, TParam3>(this IUnityContainer container, Func<TParam1, TParam2, TParam3, TResult> factoryFunc)
-        {
-            return container.RegisterType<TResult>(new InjectionFactory(c => factoryFunc(c.Resolve<TParam1>(), c.Resolve<TParam2>(), c.Resolve<TParam3>())));
-        }
-
         public static IUnityContainer RegisterTypeByFactoryFuncLazy<TResult, TParam1, TParam2, TParam3>(this IUnityContainer container, Func<TParam1, TParam2, TParam3, TResult> factoryFunc) where TResult : class
         {
             return container.RegisterType<TResult>(new InjectionFactory(c => new Castle.DynamicProxy.ProxyGenerator().CreateInterfaceProxyWithoutTarget<TResult>(new LazyInterceptor<TResult>(() => factoryFunc(c.Resolve<TParam1>(), c.Resolve<TParam2>(), c.Resolve<TParam3>())))));
-        }
-
-        public static IUnityContainer RegisterTypeByFactoryFunc<TResult, TParam1, TParam2, TParam3, TParam4>(this IUnityContainer container, Func<TParam1, TParam2, TParam3, TParam4, TResult> factoryFunc)
-        {
-            return container.RegisterType<TResult>(new InjectionFactory(c => factoryFunc(c.Resolve<TParam1>(), c.Resolve<TParam2>(), c.Resolve<TParam3>(), c.Resolve<TParam4>())));
         }
 
         public static IUnityContainer RegisterTypeByFactoryFuncLazy<TResult, TParam1, TParam2, TParam3, TParam4>(this IUnityContainer container, Func<TParam1, TParam2, TParam3, TParam4, TResult> factoryFunc) where TResult : class

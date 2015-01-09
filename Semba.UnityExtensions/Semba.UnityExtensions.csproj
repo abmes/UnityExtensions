@@ -60,6 +60,7 @@
     <Compile Include="DecoratingInterceptor.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
+    <Compile Include="FactoryFuncExtensionMethods.cs" />
     <Compile Include="InjectionParamFactory.cs" />
     <Compile Include="ParamFactoryDelegateBuildPlanPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
