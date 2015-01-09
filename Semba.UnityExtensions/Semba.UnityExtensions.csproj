@@ -57,10 +57,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DecoratorBuildStrategy.cs" />
-    <Compile Include="DecoratorContainerExtension.cs" />
+    <Compile Include="DecoratingInterceptor.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
+    <Compile Include="InjectionParamFactory.cs" />
+    <Compile Include="ParamFactoryDelegateBuildPlanPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingletonExtensionMethods.cs" />
     <Compile Include="AutoFactoryExtensionMethods.cs" />

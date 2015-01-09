@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Semba.UnityExtensions</id>
-    <version>1.0.19</version>
+    <version>1.0.21</version>
     <authors>SEMBA</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Semba Unity Extensions</title>

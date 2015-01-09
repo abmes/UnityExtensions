@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace Semba.UnityExtensions
 {
-    public static class DecoratorExtensionMethod
+    public static class DecoratorExtensionMethods
     {
+        private static IUnityContainer GetDecoratingProxy(IUnityContainer container)
+        {
+            var proxyGenerator = new Castle.DynamicProxy.ProxyGenerator();
+            return proxyGenerator.CreateInterfaceProxyWithoutTarget<IUnityContainer>(new DecoratingInterceptor(container));
+        }
+
         public static IUnityContainer EnableDecoration(this IUnityContainer container)
         {
-            return container.AddExtension(new DecoratorContainerExtension());
+            return GetDecoratingProxy(container);
         }
     }
 }
