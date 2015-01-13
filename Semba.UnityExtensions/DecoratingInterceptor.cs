@@ -49,7 +49,7 @@ namespace Semba.UnityExtensions
         {
             return string.Format(DecoratorNamePattern, t.Name, GetCurrentDecoratorNo(t) + 1);
         }
-
+        
         public void Intercept(Castle.DynamicProxy.IInvocation invocation)
         {
             if ((invocation.Method.Name == "RegisterType") && (invocation.Arguments[0] == null))
@@ -101,7 +101,7 @@ namespace Semba.UnityExtensions
                     {
                         var injectionParamFactories =
                             injectionMembers
-                                .OfType<IInjectionParamFactory>()
+                                .OfType<IInjectionParameterizedFactory>()
                                 .Where(x => x.GetType().GenericTypeArguments.Reverse().Skip(1).Any(arg => typeIsSame(arg)));
 
                         if (injectionParamFactories.Any())

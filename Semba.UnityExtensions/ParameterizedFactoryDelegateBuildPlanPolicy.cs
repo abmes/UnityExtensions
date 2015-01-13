@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Semba.UnityExtensions
 {
-    internal class ParamFactoryDelegateBuildPlanPolicy : IBuildPlanPolicy
+    internal class ParameterizedFactoryDelegateBuildPlanPolicy : IBuildPlanPolicy
     {
         private readonly Delegate _factoryFunc;
         private readonly IEnumerable<ResolvedParameter> _resolvedParameters;
 
-        public ParamFactoryDelegateBuildPlanPolicy(Delegate factoryFunc, IEnumerable<ResolvedParameter> resolvedParameters)
+        public ParameterizedFactoryDelegateBuildPlanPolicy(Delegate factoryFunc, IEnumerable<ResolvedParameter> resolvedParameters)
         {
             _factoryFunc = factoryFunc;
             _resolvedParameters = resolvedParameters;
@@ -21,7 +21,7 @@ namespace Semba.UnityExtensions
 
         private object ResolveParam(Type paramType, IBuilderContext context)
         {
-            var resolvedParameter = _resolvedParameters.FirstOrDefault(x => x.ParameterType == paramType);
+            var resolvedParameter = _resolvedParameters.SingleOrDefault(x => x.ParameterType == paramType);
             return (resolvedParameter == null) ? context.NewBuildUp(new NamedTypeBuildKey(paramType)) : resolvedParameter.GetResolverPolicy(paramType).Resolve(context);
         }
 
