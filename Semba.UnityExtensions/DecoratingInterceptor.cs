@@ -99,19 +99,20 @@ namespace Semba.UnityExtensions
 
                     if (concreteType.IsInterface)
                     {
-                        var injectionParamFactories =
-                            injectionMembers
-                                .OfType<IInjectionParameterizedFactory>()
-                                .Where(x => x.GetType().GenericTypeArguments.Reverse().Skip(1).Any(arg => typeIsSame(arg)));
-
-                        if (injectionParamFactories.Any())
-                        {
-                            foreach (var factory in injectionParamFactories)
+                        injectionMembers =
+                            injectionMembers.Select(im =>
                             {
-                                // stari params trqbwa da se podment s nowi, ako sa bili za prazno ime da stanat za seldwashitiq dekorator
-                                factory.AddResolvedParameter(new ResolvedParameter(t, PeekNextDecoratorName(t)));
-                            }
-                        }
+                                var factory = im as IInjectionParameterizedFactory;
+
+                                if ((factory != null) && factory.FactoryFunc.Method.GetParameters().Any(p => typeIsSame(p.ParameterType) && !factory.ResolvedParameters.Any(rp => typeIsSame(rp.ParameterType))))
+                                {
+                                    return InjectionParameterizedFactoryFactory.GetNewInjectionParameterizedFactory(factory.FactoryFunc, factory.ResolvedParameters.Concat(new[] { new ResolvedParameter(t, PeekNextDecoratorName(t)) }).ToArray());
+                                }
+                                else
+                                {
+                                    return im;
+                                }
+                            }).ToArray();
                     }
 
                     invocation.Arguments[2] = name;

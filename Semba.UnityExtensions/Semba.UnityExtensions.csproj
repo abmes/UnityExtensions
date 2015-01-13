@@ -62,6 +62,7 @@
     <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="FactoryFuncExtensionMethods.cs" />
     <Compile Include="InjectionParameterizedFactory.cs" />
+    <Compile Include="InjectionParameterizedFactoryFactory.cs" />
     <Compile Include="LazyInterceptor.cs" />
     <Compile Include="ParameterizedFactoryDelegateBuildPlanPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

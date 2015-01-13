@@ -10,15 +10,14 @@ namespace Semba.UnityExtensions
 {
     internal interface IInjectionParameterizedFactory
     {
-        //IEnumerable<ResolvedParameter> ResolvedParameters { get; }
-        void AddResolvedParameter(ResolvedParameter resolvedParameter);
-
+        Delegate FactoryFunc { get; }
+        IEnumerable<ResolvedParameter> ResolvedParameters { get; }
     }
 
     public class InjectionParameterizedFactory : InjectionMember, IInjectionParameterizedFactory
     {
         private readonly Delegate _factoryFunc;
-        private IEnumerable<ResolvedParameter> _resolvedParameters;
+        private readonly IEnumerable<ResolvedParameter> _resolvedParameters;
 
         public InjectionParameterizedFactory(Delegate factoryFunc, params ResolvedParameter[] resolvedParameters)
         {
@@ -26,11 +25,8 @@ namespace Semba.UnityExtensions
             _resolvedParameters = resolvedParameters;
         }
 
-        //public IEnumerable<ResolvedParameter> ResolvedParameters { get { return _resolvedParameters; } }
-        public void AddResolvedParameter(ResolvedParameter resolvedParameter)
-        {
-            _resolvedParameters = _resolvedParameters.Concat(new[] { resolvedParameter });
-        }
+        public Delegate FactoryFunc { get { return _factoryFunc; } }
+        public IEnumerable<ResolvedParameter> ResolvedParameters { get { return _resolvedParameters; } }
 
         public override void AddPolicies(Type serviceType, Type implementationType, string name, IPolicyList policies)
         {
@@ -39,46 +35,6 @@ namespace Semba.UnityExtensions
 
             var policy = new ParameterizedFactoryDelegateBuildPlanPolicy(_factoryFunc, _resolvedParameters.ToArray());
             policies.Set<IBuildPlanPolicy>(policy, new NamedTypeBuildKey(implementationType, name));
-        }
-    }
-
-    public class InjectionParameterizedFactory<TResult> : InjectionParameterizedFactory
-    {
-        public InjectionParameterizedFactory(Func<TResult> factoryFunc)
-            : base(factoryFunc)
-        {
-        }
-    }
-
-    public class InjectionParameterizedFactory<TParam1, TResult> : InjectionParameterizedFactory
-    {
-        public InjectionParameterizedFactory(Func<TParam1, TResult> factoryFunc, params ResolvedParameter[] resolvedParameters)
-            : base(factoryFunc, resolvedParameters)
-        {
-        }
-    }
-
-    public class InjectionParameterizedFactory<TParam1, TParam2, TResult> : InjectionParameterizedFactory
-    {
-        public InjectionParameterizedFactory(Func<TParam1, TParam2, TResult> factoryFunc, params ResolvedParameter[] resolvedParameters)
-            : base(factoryFunc, resolvedParameters)
-        {
-        }
-    }
-
-    public class InjectionParameterizedFactory<TParam1, TParam2, TParam3, TResult> : InjectionParameterizedFactory
-    {
-        public InjectionParameterizedFactory(Func<TParam1, TParam2, TParam3, TResult> factoryFunc, params ResolvedParameter[] resolvedParameters)
-            : base(factoryFunc, resolvedParameters)
-        {
-        }
-    }
-
-    public class InjectionParameterizedFactory<TParam1, TParam2, TParam3, TParam4, TResult> : InjectionParameterizedFactory
-    {
-        public InjectionParameterizedFactory(Func<TParam1, TParam2, TParam3, TParam4, TResult> factoryFunc, params ResolvedParameter[] resolvedParameters)
-            : base(factoryFunc, resolvedParameters)
-        {
         }
     }
 }
