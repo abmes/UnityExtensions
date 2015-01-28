@@ -1,5 +1,5 @@
 Set-Alias msbuild "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
-msbuild .\Semba.UnityExtensions\Semba.UnityExtensions.csproj /verbosity:minimal
+msbuild .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
 
 if (Test-Path -Path bin)
 {
@@ -8,11 +8,11 @@ if (Test-Path -Path bin)
 
 mkdir bin
 
-Copy-Item .\Semba.UnityExtensions.nuspec bin
+Copy-Item .\Abmes.UnityExtensions.nuspec bin
 mkdir bin\lib\net45
 
 
-Copy-Item .\Semba.UnityExtensions\bin\Release\Semba.UnityExtensions.dll .\bin\lib\net45
+Copy-Item .\Abmes.UnityExtensions\bin\Release\Abmes.UnityExtensions.dll .\bin\lib\net45
 
 
 echo ""
@@ -23,7 +23,7 @@ $webClient = New-Object System.Net.WebClient
 $webClient.DownloadFile("https://nuget.org/nuget.exe", "nuget.exe")
 
 cd bin
-..\nuget.exe pack Semba.UnityExtensions.nuspec
+..\nuget.exe pack Abmes.UnityExtensions.nuspec
 cd..
 
 Remove-Item nuget.exe
