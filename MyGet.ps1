@@ -1,4 +1,4 @@
-MsBuildExe .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
+MsBuild .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
 
 if (Test-Path -Path bin)
 {
