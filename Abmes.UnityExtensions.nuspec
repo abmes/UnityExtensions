@@ -7,7 +7,9 @@
 	<licenseUrl>https://github.com/abmes/UnityExtensions/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Abmes Unity Extensions</title>
-    <description>Abmes Unity Extensions</description>
+    <description>Extensions for the Unity DI container</description>
+    <projectUrl>https://github.com/abmes/UnityExtensions</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/10727382?v=3&s=200</iconUrl>
     <copyright>Copyright 2015 Abmes</copyright>
 	<dependencies>
       <dependency id="Unity" version="3.5.1404.0" />
