@@ -2,12 +2,13 @@
 <package >
   <metadata>
     <id>Abmes.UnityExtensions</id>
-    <version>1.0.30</version>
+    <version>$version$</version>
     <authors>Abmes</authors>
+	<licenseUrl>https://github.com/abmes/UnityExtensions/blob/master/license.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>Abmes Unity Extensions</title>
     <description>Abmes Unity Extensions</description>
-    <copyright>Copyright 2014</copyright>
+    <copyright>Copyright 2015 Abmes</copyright>
 	<dependencies>
       <dependency id="Unity" version="3.5.1404.0" />
       <dependency id="Castle.Core" version="3.3.3" />
