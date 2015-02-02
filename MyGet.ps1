@@ -21,7 +21,6 @@ cd bin
 NuGet pack Abmes.UnityExtensions.nuspec -Version $packageVersion
 cd..
 
-
 if (-not (Test-Path "build"))
 {
     mkdir build
