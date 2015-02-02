@@ -1,4 +1,4 @@
-%MsBuildExe% .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
+MsBuildExe .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
 
 if (Test-Path -Path bin)
 {
@@ -13,8 +13,10 @@ mkdir bin\lib\net45
 
 Copy-Item .\Abmes.UnityExtensions\bin\Release\Abmes.UnityExtensions.dll .\bin\lib\net45
 
+$packageVersion = $env:PackageVersion
+
 cd bin
-%NuGet% pack Abmes.UnityExtensions.nuspec -Version %PackageVersion%
+NuGet pack Abmes.UnityExtensions.nuspec -Version $packageVersion
 cd..
 
 
