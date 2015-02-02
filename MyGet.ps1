@@ -1,3 +1,5 @@
+NuGet install Abmes.UnityExtensions\packages.config -OutputDirectory packages
+
 MsBuild .\Abmes.UnityExtensions\Abmes.UnityExtensions.csproj /verbosity:minimal
 
 if (Test-Path -Path bin)
