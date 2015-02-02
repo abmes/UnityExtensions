@@ -9,7 +9,7 @@
     <title>Abmes Unity Extensions</title>
     <description>Extensions for the Unity DI container</description>
     <projectUrl>https://github.com/abmes/UnityExtensions</projectUrl>
-    <iconUrl>https://avatars2.githubusercontent.com/u/10727382?v=3&s=200</iconUrl>
+    <iconUrl>https://en.gravatar.com/userimage/79846298/52cbbcdfa221ce4fea5ebea5928aa1e7.png</iconUrl>
     <copyright>Copyright 2015 Abmes</copyright>
 	<dependencies>
       <dependency id="Unity" version="3.5.1404.0" />
