@@ -28,4 +28,5 @@ if (-not (Test-Path "build"))
 
 Copy-Item .\bin\*.nupkg .\build
 
+
 Remove-Item bin -Recurse -Force
