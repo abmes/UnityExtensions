@@ -1,5 +1,6 @@
 Abmes.UnityExtensions
-====================
+=====================
+[![abmes MyGet Build Status](https://www.myget.org/BuildSource/Badge/abmes?identifier=2f697fe1-acf4-44c9-841e-528fba65a13e)](https://www.myget.org/)
 
 This project provides some extensions for the [Unity](http://unity.codeplex.com/) IoC container.
 
