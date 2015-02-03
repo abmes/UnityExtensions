@@ -59,3 +59,40 @@ to fix this you can call the extension method **RegisterIEnumerable** on the con
 ```c#
 container.RegisterIEnumerable();
 ```
+
+ByFactoryFunc extensions
+------------------------
+
+With unity you can use an InjectionFactory to resolve a given type like this
+```c#
+container.RegisterType<IFoo>(new InjectionFactory(c => c.Resolve<IFooFactory>().CreateFoo()));
+```
+
+We have added a new type **InjectionParameterizedFactory** which resolves the requested types and passes them to the given factory function
+```c#
+Func<IFooFactory, IFoo> factoryFunc = fooFactory => fooFactory.CreateFoo();
+
+container.RegisterType<IFoo>(new InjectionParameterizedFactory(factoryFunc));
+```
+The above code will resolve all the parameters of the *factoryFunc* and then call it passing them in to the function to produce the result of the resolving.
+You can read the above two lines as
+* define that given an IFooFactory you can get IFoo by calling its CreateFoo() method
+* tell the container to use the above definition whenever it needs an IFoo
+
+For convenience we have added extension methods with generic type arguments to define the function and register it with the container.
+```c#
+container.RegisterTypeByFactoryFunc<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
+```
+The above code can be read as follows "When you need an IFoo resolve me an IFooFactory and call CreateFoo() on it to get the IFoo"
+
+These can get more complicated like the following example
+```c#
+container.RegisterTypeByFactoryFunc<IStat, IReport, IReportParser>((report, parser) => parser.ParseReport(report));
+```
+The above code can be read as follows "When you need and IStat give me an IReport and an IReportParser then I can give you the IStat by parsing the report with the parser".
+
+ByFactoryFuncLazy extensions
+----------------------------
+
+Decorator pattern extensions
+----------------------------
