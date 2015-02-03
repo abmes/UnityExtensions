@@ -6,17 +6,17 @@ This project provides some extensions for the [Unity](http://unity.codeplex.com/
 AutoFactory extensions
 ----------------------
 
-This is an extension method for registering auto factories using the Unity.TypedFactories(https://github.com/PombeirP/Unity.TypedFactories) project.
+This is an extension method for registering auto factories using the [Unity.TypedFactories](https://github.com/PombeirP/Unity.TypedFactories) project.
 It wraps the call with generic type arguments and returns the container so that its fluent interface can continue.
 
 Instead of writing
-
-	container.RegisterTypedFactory<IFooFactory>().ForConcreteType<Foo>();
-
+```C#
+container.RegisterTypedFactory<IFooFactory>().ForConcreteType<Foo>();
+```
 you can write
-
-	container.RegisterAutoFactory<IFooFactory, Foo>();
-
+```C#
+container.RegisterAutoFactory<IFooFactory, Foo>();
+```
 RegisterTypeSingleton extensions
 --------------------------------
 
