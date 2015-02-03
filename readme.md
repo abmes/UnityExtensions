@@ -33,13 +33,11 @@ IEnumerable extensions
 ----------------------
 
 With Unity a consumer can expect an array of objects implementing an interface.
-Unity will resolve all *named* registrations and pass them as an array to the consumer.
+Unity will resolve all **named** registrations and pass them as an array to the consumer.
 ```c#
 container.RegisterType<ILoader, FooLoader>("foo");
 container.RegisterType<ILoader, BarLoader>("bar");
 container.RegisterType<ILoader, BazLoader>("baz");
-
-...
 
 public MyConsumer
 {
@@ -49,23 +47,15 @@ public MyConsumer
 	}
 }
 
-...
-
 var c = container.Resolve<MyConsumer>();
 ```
 
-However this will not work if the consumer expects an IEnumerable<T>
+However this will not work if the consumer expects an IEnumerable of the interface
 ```c#
-public MyConsumer
-{
 	public MyConsumer(IEnumerable<ILoader> loaders)
-	{
-		...
-	}
-}
 ```
 
-to fix this you can call the extension method *RegisterIEnumerable* on the container
+to fix this you can call the extension method **RegisterIEnumerable** on the container
 ```c#
 container.RegisterIEnumerable();
 ```
