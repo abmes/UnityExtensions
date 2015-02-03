@@ -21,9 +21,11 @@ RegisterTypeSingleton extensions
 --------------------------------
 
 These are extension methods which pass the ContainerControlledLifetimeManager to the container so instead of writing
-
-	container.RegisterType<IFoo, Foo>(new ContainerControlledLifetimeManager());
-
+```C#
+container.RegisterType<IFoo, Foo>(new ContainerControlledLifetimeManager());
+```
 you can write
-
-	container.RegisterTypeSingleton<IFoo, Foo>();
+```C#
+public class Test {}
+container.RegisterTypeSingleton<IFoo, Foo>();
+```
