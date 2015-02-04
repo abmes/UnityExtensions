@@ -112,14 +112,14 @@ container.RegisterType<ICacheManager, SimpleCache>();
 container.RegisterType<ITenantStore, TenantStore>("BasicStore");
 container.RegisterType<ITenantStore, LoggingTenantStore>("LoggingStore",
     new InjectionConstructor(
-    new ResolvedParameter<ITenantStore>("BasicStore"),
-    new ResolvedParameter<ILogger>()));
+        new ResolvedParameter<ITenantStore>("BasicStore"),
+        new ResolvedParameter<ILogger>()));
 
 // Default registration
 container.RegisterType<ITenantStore, CachingTenantStore>(
     new InjectionConstructor(
-    new ResolvedParameter<ITenantStore>("LoggingStore"),
-    new ResolvedParameter<ICacheManager>()));
+        new ResolvedParameter<ITenantStore>("LoggingStore"),
+        new ResolvedParameter<ICacheManager>()));
 ```
 
 Which is quite cumbersome.
@@ -138,11 +138,11 @@ container
 just like in Castle.Windsor
 
 A few things you should know when using the EnableDecoration() extension method:
-* The order is important. The first registration is used to satisfy the dependency if it has a dependency on the same interface the next registration is used to satisfy it.
+* The order is important. The first registration is used to satisfy the dependency. If it has a dependency on the same interface the next registration is used to satisfy it.
 * The decoration works only for registrations without a name
 * A type in the decorator chain can have other dependencies and they will be satisfied by the container
 * You can include a RegisterTypeByFactoryFunc in the decorator chain
-* **Very Important** You must use the container returned by .EnableDecoration() for this extension to work. You should forget about the original container after you call .EnableDecoration(). We suggest doing something like
+* **Very Important**. You must use the container returned by .EnableDecoration() for this extension to work. You should forget about the original container after you call .EnableDecoration(). We suggest doing something like
 ```c#
 var container = new UnityContainer().EnableDecoration();
 container.RegisterType<IFoo, Foo>();
