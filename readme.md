@@ -95,5 +95,65 @@ The above code can be read as follows "When you need and IStat give me an IRepor
 ByFactoryFuncLazy extensions
 ----------------------------
 
+Sometimes you may need lazy instantiation of the implementation. Then you can use
+```c#
+container.RegisterTypeByFactoryFuncLazy<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
+```
+This way the container will give you a proxy object implementing IFooFactory which will actually create the underlying object when you call CreateFoo()
+
 Decorator pattern extensions
 ----------------------------
+
+If you want to use the decorator pattern with Unity you may find yourself writing something like
+```c#
+container.RegisterType<ILogger, Logger>();
+container.RegisterType<ICacheManager, SimpleCache>();
+
+container.RegisterType<ITenantStore, TenantStore>("BasicStore");
+container.RegisterType<ITenantStore, LoggingTenantStore>("LoggingStore",
+    new InjectionConstructor(
+    new ResolvedParameter<ITenantStore>("BasicStore"),
+    new ResolvedParameter<ILogger>()));
+
+// Default registration
+container.RegisterType<ITenantStore, CachingTenantStore>(
+    new InjectionConstructor(
+    new ResolvedParameter<ITenantStore>("LoggingStore"),
+    new ResolvedParameter<ICacheManager>()));
+```
+
+Which is quite cumbersome.
+If you use the EnableDecoration() extension method you can do it as simple as
+```c#
+container
+    .EnableDecoration()
+
+    .RegisterType<ILogger, Logger>()
+    .RegisterType<ICacheManager, SimpleCache>()
+
+    .RegisterType<ITenantStore, CachingTenantStore>()
+    .RegisterType<ITenantStore, LoggingTenantStore>()
+    .RegisterType<ITenantStore, TenantStore>();
+```
+just like in Castle.Windsor
+
+A few things you should know when using the EnableDecoration() extension method:
+* The order is important. The first registration is used to satisfy the dependency if it has a dependency on the same interface the next registration is used to satisfy it.
+* The decoration works only for registrations without a name
+* A type in the decorator chain can have other dependencies and they will be satisfied by the container
+* You can include a RegisterTypeByFactoryFunc in the decorator chain
+* **Very Important** You must use the container returned by .EnableDecoration() for this extension to work. You should forget about the original container after you call .EnableDecoration(). We suggest doing something like
+```c#
+var container = new UnityContainer().EnableDecoration();
+container.RegisterType<IFoo, Foo>();
+...
+```
+or
+```c#
+public IUnityContainer GetContainerWithRegistrations()
+{
+    return new UnityContainer()
+        .EnableDecoration()
+        .RegisterType<IFoo, Foo>();
+}
+```
