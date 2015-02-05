@@ -99,7 +99,8 @@ Sometimes you may need lazy instantiation of the implementation. Then you can us
 ```c#
 container.RegisterTypeByFactoryFuncLazy<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
 ```
-This way the container will give you a proxy object implementing IFooFactory which will actually create the underlying object when you call CreateFoo()
+This way the container will give you a proxy object implementing IFooFactory which will actually create the underlying object when you call CreateFoo().
+There is no RegisterTypeLazy<IFoo, Foo>() extension method because you only need something to be lazy if some work will be done and no work should be done in a construcor.
 
 Decorator pattern extensions
 ----------------------------
