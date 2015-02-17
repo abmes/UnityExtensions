@@ -10,7 +10,7 @@ namespace Abmes.UnityExtensions
 {
     public static class AutoFactoryExtensionMethods
     {
-        public static IUnityContainer RegisterAutoFactory<TFactoryInterface, TConcreteType>(this IUnityContainer container) where TFactoryInterface : class
+        public static IUnityContainer RegisterTypeAsAutoFactory<TFactoryInterface, TConcreteType>(this IUnityContainer container) where TFactoryInterface : class
         {
             return container.RegisterTypeEx<TFactoryInterface>().AsAutoFactoryFor<TConcreteType>();
         }
