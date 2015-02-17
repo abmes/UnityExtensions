@@ -106,7 +106,7 @@ namespace Abmes.UnityExtensions
 
                                 if ((factory != null) && factory.FactoryFunc.Method.GetParameters().Any(p => typeIsSame(p.ParameterType) && !factory.ResolvedParameters.Any(rp => typeIsSame(rp.ParameterType))))
                                 {
-                                    return InjectionParameterizedFactoryFactory.GetNewInjectionParameterizedFactory(factory.FactoryFunc, factory.ResolvedParameters.Concat(new[] { new ResolvedParameter(t, PeekNextDecoratorName(t)) }).ToArray());
+                                    return new InjectionParameterizedFactory(factory.FactoryFunc, factory.ResolvedParameters.Concat(new[] { new ResolvedParameter(t, PeekNextDecoratorName(t)) }).ToArray());
                                 }
                                 else
                                 {
