@@ -60,8 +60,9 @@
     <Compile Include="DecoratingInterceptor.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
-    <Compile Include="FactoryFuncBuilder.cs" />
     <Compile Include="FactoryFuncExtensionMethods.cs" />
+    <Compile Include="RegisterTypeEx.cs" />
+    <Compile Include="RegisterTypeExExtensionMethod.cs" />
     <Compile Include="InjectionParameterizedFactory.cs" />
     <Compile Include="LazyInterceptor.cs" />
     <Compile Include="ParameterizedFactoryDelegateBuildPlanPolicy.cs" />
