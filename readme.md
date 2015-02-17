@@ -82,13 +82,13 @@ You can read the above two lines as
 
 For convenience we have added extension methods with generic type arguments to define the function and register it with the container.
 ```c#
-container.RegisterTypeByFactoryFunc<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
+container.RegisterTypeByFactoryFunc<IFoo>().Using<IFooFactory>(fooFactory => fooFactory.CreateFoo());
 ```
 The above code can be read as follows "When you need an IFoo resolve me an IFooFactory and call CreateFoo() on it to get the IFoo"
 
 These can get more complicated like the following example
 ```c#
-container.RegisterTypeByFactoryFunc<IStat, IReport, IReportParser>((report, parser) => parser.ParseReport(report));
+container.RegisterTypeByFactoryFunc<IStat>().Using<IReport, IReportParser>((report, parser) => parser.ParseReport(report));
 ```
 The above code can be read as follows "When you need and IStat give me an IReport and an IReportParser then I can give you the IStat by parsing the report with the parser".
 
@@ -97,10 +97,10 @@ ByFactoryFuncLazy extensions
 
 Sometimes you may need lazy instantiation of the implementation. Then you can use
 ```c#
-container.RegisterTypeByFactoryFuncLazy<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
+container.RegisterTypeByFactoryFunc<IFoo>().UsingLazy<IFooFactory>(fooFactory => fooFactory.CreateFoo());
 ```
 This way the container will give you a proxy object implementing IFooFactory which will actually create the underlying object when you call CreateFoo().
-There is no RegisterTypeLazy<IFoo, Foo>() extension method because you only need something to be lazy if some work will be done and no work should be done in a construcor.
+There is no RegisterTypeLazy<IFoo, Foo>() extension method because you only need something to be lazy if some work will be done and no work should be done in a constructor.
 
 Decorator pattern extensions
 ----------------------------
