@@ -16,7 +16,11 @@ container.RegisterTypedFactory<IFooFactory>().ForConcreteType<Foo>();
 ```
 you can write
 ```c#
-container.RegisterAutoFactory<IFooFactory, Foo>();
+container.RegisterTypeEx<IFooFactory>().AsAutoFactoryFor<Foo>();
+```
+or the more compact form
+```c#
+container.RegisterTypeAsAutoFactory<IFooFactory, Foo>();
 ```
 RegisterTypeSingleton extensions
 --------------------------------
@@ -77,27 +81,39 @@ container.RegisterType<IFoo>(new InjectionParameterizedFactory(factoryFunc));
 ```
 The above code will resolve all the parameters of the *factoryFunc* and then call it passing them in to the function to produce the result of the resolving.
 You can read the above two lines as
-* define that given an IFooFactory you can get IFoo by calling its CreateFoo() method
+* define that you can get an IFoo by calling CreateFoo() on an IFooFactory
 * tell the container to use the above definition whenever it needs an IFoo
 
 For convenience we have added extension methods with generic type arguments to define the function and register it with the container.
 ```c#
-container.RegisterTypeByFactoryFunc<IFoo>().Using<IFooFactory>(fooFactory => fooFactory.CreateFoo());
+container.RegisterTypeEx<IFoo>().ByFactoryFunc<IFooFactory>(fooFactory => fooFactory.CreateFoo());
 ```
-The above code can be read as follows "When you need an IFoo resolve me an IFooFactory and call CreateFoo() on it to get the IFoo"
+and the more compact form
+```c#
+container.RegisterTypeByFactoryFunc<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
+```
+The above code can be read as follows "An IFoo can be obtained by calling CreateFoo() on an IFooFactory"
 
 These can get more complicated like the following example
 ```c#
-container.RegisterTypeByFactoryFunc<IStat>().Using<IReport, IReportParser>((report, parser) => parser.ParseReport(report));
+container.RegisterTypeEx<IStat>().ByFactoryFunc<IStatReport, IStatReportParser>((report, parser) => parser.ParseReport(report));
 ```
-The above code can be read as follows "When you need and IStat give me an IReport and an IReportParser then I can give you the IStat by parsing the report with the parser".
+and the more compact form
+```c#
+container.RegisterTypeByFactoryFunc<IStat, IStatReport, IStatReportParser>((report, parser) => parser.ParseReport(report));
+```
+The above code can be read as follows "An IStat can be obtained by parsing an IStatReport with an IStatReportParser".
 
 ByFactoryFuncLazy extensions
 ----------------------------
 
 Sometimes you may need lazy instantiation of the implementation. Then you can use
 ```c#
-container.RegisterTypeByFactoryFunc<IFoo>().UsingLazy<IFooFactory>(fooFactory => fooFactory.CreateFoo());
+container.RegisterTypeEx<IFoo>().ByFactoryFuncLazy<IFooFactory>(fooFactory => fooFactory.CreateFoo());
+```
+or the more compact form
+```c#
+container.RegisterTypeByFactoryFuncLazy<IFoo, IFooFactory>(fooFactory => fooFactory.CreateFoo());
 ```
 This way the container will give you a proxy object implementing IFooFactory which will actually create the underlying object when you call CreateFoo().
 There is no RegisterTypeLazy<IFoo, Foo>() extension method because you only need something to be lazy if some work will be done and no work should be done in a constructor.
