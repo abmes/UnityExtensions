@@ -9,45 +9,45 @@ namespace Abmes.UnityExtensions
 {
     class DecoratingInterceptor : Castle.DynamicProxy.IInterceptor
     {
-        private const string DecoratorNamePattern = "Decorator Type {0} No {1}";
-        private IDictionary<Type, int> _decoratorCounters;
+        private const string DecoratorNamePattern = "Decorator Type {0} Name {1} No {2}";
+        private IDictionary<Tuple<Type, string>, int> _decoratorCounters;
         private IUnityContainer _container;
 
         public DecoratingInterceptor(IUnityContainer container)
         {
             _container = container;
-            _decoratorCounters = new Dictionary<Type, int>();
+            _decoratorCounters = new Dictionary<Tuple<Type, string>, int>();
         }
 
-        private void EnsureDecoratorCounterExists(Type t)
+        private void EnsureDecoratorCounterExists(Tuple<Type, string> key)
         {
-            if (!_decoratorCounters.ContainsKey(t))
+            if (!_decoratorCounters.ContainsKey(key))
             {
-                _decoratorCounters[t] = 0;
+                _decoratorCounters[key] = 0;
             }
         }
 
-        private int GetCurrentDecoratorNo(Type t)
+        private int GetCurrentDecoratorNo(Tuple<Type, string> key)
         {
-            EnsureDecoratorCounterExists(t);
-            return _decoratorCounters[t];
+            EnsureDecoratorCounterExists(key);
+            return _decoratorCounters[key];
         }
 
-        private void IncreaseDecoratorCount(Type t)
+        private void IncreaseDecoratorCount(Tuple<Type, string> key)
         {
-            EnsureDecoratorCounterExists(t);
-            _decoratorCounters[t] = _decoratorCounters[t] + 1;
+            EnsureDecoratorCounterExists(key);
+            _decoratorCounters[key] = _decoratorCounters[key] + 1;
         }
 
-        private string GetNewDecoratorName(Type t)
+        private string GetNewDecoratorName(Type t, string name)
         {
-            IncreaseDecoratorCount(t);
-            return string.Format(DecoratorNamePattern, t.Name, GetCurrentDecoratorNo(t));
+            IncreaseDecoratorCount(Tuple.Create(t, name));
+            return string.Format(DecoratorNamePattern, t.Name, name, GetCurrentDecoratorNo(Tuple.Create(t, name)));
         }
 
-        private string PeekNextDecoratorName(Type t)
+        private string PeekNextDecoratorName(Type t, string name)
         {
-            return string.Format(DecoratorNamePattern, t.Name, GetCurrentDecoratorNo(t) + 1);
+            return string.Format(DecoratorNamePattern, t.Name, name, GetCurrentDecoratorNo(Tuple.Create(t, name)) + 1);
         }
         
         public void Intercept(Castle.DynamicProxy.IInvocation invocation)
@@ -66,58 +66,52 @@ namespace Abmes.UnityExtensions
 
                 Func<Type, bool> typeIsSame = type => (type == t) || (type == typeof(Func<>).MakeGenericType(t)) || (type == typeof(Lazy<>).MakeGenericType(t));
 
-                if (string.IsNullOrEmpty(name))
-                {
-                    name = null;
-                }
+                name = (name == "") ? null : name;
 
-                if (name == null)
-                {
-                    name = _container.Registrations.Any(x => x.RegisteredType == t) ? GetNewDecoratorName(t) : null;
+                var newName = _container.Registrations.Any(x => (x.RegisteredType == t) && (x.Name == name)) ? GetNewDecoratorName(t, name) : name;
 
-                    if (concreteType.IsClass)
+                if (concreteType.IsClass)
+                {
+                    var constructor = concreteType.GetConstructors().SingleOrDefault();
+
+                    if ((constructor != null) && (constructor.GetParameters().Any(p => typeIsSame(p.ParameterType))))
                     {
-                        var constructor = concreteType.GetConstructors().SingleOrDefault();
+                        var resolvedParameters =
+                            constructor.GetParameters()
+                            .Select(x => new ResolvedParameter(x.ParameterType, typeIsSame(x.ParameterType) ? PeekNextDecoratorName(t, name) : null))
+                            .ToArray();
 
-                        if ((constructor != null) && (constructor.GetParameters().Any(p => typeIsSame(p.ParameterType))))
+                        // star injectionconstructor trqbwa da se podmenq s now , koito da e sys syshtite ResolvedParams, samo za t(bez ime ) da za nowi
+                        // za sega kazwame che ne se poddyrja
+                        if (injectionMembers.OfType<InjectionConstructor>().Any())
                         {
-                            var resolvedParameters =
-                                constructor.GetParameters()
-                                .Select(x => new ResolvedParameter(x.ParameterType, typeIsSame(x.ParameterType) ? PeekNextDecoratorName(t) : null))
-                                .ToArray();
-
-                            // star injectionconstructor trqbwa da se podmenq s now , koito da e sys syshtite ResolvedParams, samo za t(bez ime ) da za nowi
-                            // za sega kazwame che ne se poddyrja
-                            if (injectionMembers.OfType<InjectionConstructor>().Any())
-                            {
-                                throw new Exception("InjectionContructor cannot be used with decoration");
-                            }
-
-                            injectionMembers = injectionMembers.Concat(new[] { new InjectionConstructor(resolvedParameters) }).ToArray();
+                            throw new Exception("InjectionContructor cannot be used with decoration");
                         }
+
+                        injectionMembers = injectionMembers.Concat(new[] { new InjectionConstructor(resolvedParameters) }).ToArray();
                     }
-
-                    if (concreteType.IsInterface)
-                    {
-                        injectionMembers =
-                            injectionMembers.Select(im =>
-                            {
-                                var factory = im as IInjectionParameterizedFactory;
-
-                                if ((factory != null) && factory.FactoryFunc.Method.GetParameters().Any(p => typeIsSame(p.ParameterType) && !factory.ResolvedParameters.Any(rp => typeIsSame(rp.ParameterType))))
-                                {
-                                    return new InjectionParameterizedFactory(factory.FactoryFunc, factory.ResolvedParameters.Concat(new[] { new ResolvedParameter(t, PeekNextDecoratorName(t)) }).ToArray());
-                                }
-                                else
-                                {
-                                    return im;
-                                }
-                            }).ToArray();
-                    }
-
-                    invocation.Arguments[2] = name;
-                    invocation.Arguments[4] = injectionMembers;
                 }
+
+                if (concreteType.IsInterface)
+                {
+                    injectionMembers =
+                        injectionMembers.Select(im =>
+                        {
+                            var factory = im as IInjectionParameterizedFactory;
+
+                            if ((factory != null) && factory.FactoryFunc.Method.GetParameters().Any(p => typeIsSame(p.ParameterType) && !factory.ResolvedParameters.Any(rp => typeIsSame(rp.ParameterType))))
+                            {
+                                return new InjectionParameterizedFactory(factory.FactoryFunc, factory.ResolvedParameters.Concat(new[] { new ResolvedParameter(t, PeekNextDecoratorName(t, name)) }).ToArray());
+                            }
+                            else
+                            {
+                                return im;
+                            }
+                        }).ToArray();
+                }
+
+                invocation.Arguments[2] = newName;
+                invocation.Arguments[4] = injectionMembers;
             }
 
             var result = invocation.Method.Invoke(_container, invocation.Arguments);
