@@ -12,10 +12,9 @@
     <iconUrl>https://en.gravatar.com/userimage/79846298/52cbbcdfa221ce4fea5ebea5928aa1e7.png</iconUrl>
     <copyright>Copyright 2015 Abmes</copyright>
 	<dependencies>
-      <dependency id="Unity" version="3.5.1404.0" />
+      <dependency id="Unity" version="4.0.1" />
       <dependency id="Castle.Core" version="3.3.3" />
-      <dependency id="JetBrains.Annotations.Redist" version="7.1" />
-      <dependency id="Unity.TypedFactories" version="1.0.55" />
+      <dependency id="Abmes.Unity.TypedFactories" version="1.0.3" />
     </dependencies>
   </metadata>
 </package>
