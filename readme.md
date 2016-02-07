@@ -177,10 +177,10 @@ public IUnityContainer GetContainerWithRegistrations()
 Configuraton From Surrounding Assemblies
 ----------------------------------------
 
-If you want to configire registrations in the UnityContainer from the surrounding assemblies (referenced or not) you can use the ConfigureFromSurroundingAssemblies() extension method.
-It loads all surrounding assemblies, searches for public types implementing the IUnityContainerConfigurator interface and calls RegisterTypes() on each one of them.
+If you want to configire registrations in the UnityContainer from the surrounding assemblies (referenced or not) you can use the **ConfigureFromSurroundingAssemblies()** extension method.
+It loads all surrounding assemblies, searches for public types implementing the **IUnityContainerConfigurator** interface and calls RegisterTypes() on each one of them.
 
-So if you want to register types in a global container from an assembly you should create a class implementing the IUnityContainerConfigurator interface and register your types there.
+So if you want to register types in a global container from an assembly you should create a class implementing the **IUnityContainerConfigurator** interface and register your types there.
 
 Sample usage:
 
