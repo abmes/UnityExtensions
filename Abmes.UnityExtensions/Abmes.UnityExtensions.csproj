@@ -63,10 +63,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigureFromSurroundingAssembliesExtensionMethod.cs" />
     <Compile Include="DecoratingInterceptor.cs" />
     <Compile Include="DecoratorExtensionMethods.cs" />
     <Compile Include="EnumerableExtensionMethods.cs" />
     <Compile Include="FactoryFuncExtensionMethods.cs" />
+    <Compile Include="IUnityContainerConfigurator.cs" />
     <Compile Include="RegisterTypeEx.cs" />
     <Compile Include="RegisterTypeExExtensionMethod.cs" />
     <Compile Include="InjectionParameterizedFactory.cs" />
