@@ -72,23 +72,27 @@ namespace Abmes.UnityExtensions
 
                 if (concreteType.IsClass)
                 {
-                    var constructor = concreteType.GetConstructors().SingleOrDefault();
-
-                    if ((constructor != null) && (constructor.GetParameters().Any(p => typeIsSame(p.ParameterType))))
+                    var constructors = concreteType.GetConstructors();
+                    if (constructors.Length == 1)
                     {
-                        var resolvedParameters =
-                            constructor.GetParameters()
-                            .Select(x => new ResolvedParameter(x.ParameterType, typeIsSame(x.ParameterType) ? PeekNextDecoratorName(t, name) : null))
-                            .ToArray();
+                        var constructor = constructors.Single();
 
-                        // star injectionconstructor trqbwa da se podmenq s now , koito da e sys syshtite ResolvedParams, samo za t(bez ime ) da za nowi
-                        // za sega kazwame che ne se poddyrja
-                        if (injectionMembers.OfType<InjectionConstructor>().Any())
+                        if (constructor.GetParameters().Any(p => typeIsSame(p.ParameterType)))
                         {
-                            throw new Exception("InjectionContructor cannot be used with decoration");
-                        }
+                            var resolvedParameters =
+                                constructor.GetParameters()
+                                .Select(x => new ResolvedParameter(x.ParameterType, typeIsSame(x.ParameterType) ? PeekNextDecoratorName(t, name) : null))
+                                .ToArray();
 
-                        injectionMembers = injectionMembers.Concat(new[] { new InjectionConstructor(resolvedParameters) }).ToArray();
+                            // star injectionconstructor trqbwa da se podmenq s now , koito da e sys syshtite ResolvedParams, samo za t(bez ime ) da za nowi
+                            // za sega kazwame che ne se poddyrja
+                            if (injectionMembers.OfType<InjectionConstructor>().Any())
+                            {
+                                throw new Exception("InjectionContructor cannot be used with decoration");
+                            }
+
+                            injectionMembers = injectionMembers.Concat(new[] { new InjectionConstructor(resolvedParameters) }).ToArray();
+                        }
                     }
                 }
 
