@@ -1,10 +1,9 @@
-﻿using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Unity.Injection;
+using Unity.Builder;
+using Unity.Policy;
 
 namespace Abmes.UnityExtensions
 {
@@ -32,12 +31,15 @@ namespace Abmes.UnityExtensions
 
         public void BuildUp(IBuilderContext context)
         {
-            Microsoft.Practices.Unity.Utility.Guard.ArgumentNotNull(context, "context");
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
             if (context.Existing == null)
             {
                 context.Existing = _factoryFunc.Method.Invoke(_factoryFunc.Target, ResolveParams(context).ToArray());
-                DynamicMethodConstructorStrategy.SetPerBuildSingleton(context);
+                context.SetPerBuildSingleton();
             }
         }
     }

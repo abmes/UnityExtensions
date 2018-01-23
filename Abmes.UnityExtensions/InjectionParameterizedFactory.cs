@@ -1,10 +1,10 @@
-﻿using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Unity.Injection;
+using Unity.Registration;
+using Unity.Policy;
+using Unity.Builder;
 
 namespace Abmes.UnityExtensions
 {
@@ -30,8 +30,15 @@ namespace Abmes.UnityExtensions
 
         public override void AddPolicies(Type serviceType, Type implementationType, string name, IPolicyList policies)
         {
-            Microsoft.Practices.Unity.Utility.Guard.ArgumentNotNull(implementationType, "implementationType");
-            Microsoft.Practices.Unity.Utility.Guard.ArgumentNotNull(policies, "policies");
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            if (policies == null)
+            {
+                throw new ArgumentNullException(nameof(policies));
+            }
 
             var policy = new ParameterizedFactoryDelegateBuildPlanPolicy(_factoryFunc, _resolvedParameters.ToArray());
             policies.Set<IBuildPlanPolicy>(policy, new NamedTypeBuildKey(implementationType, name));
